@@ -17,6 +17,26 @@ defmodule CarouselTest do
     assert carousel.queue == {[:baz], [:foo, :bar]}
   end
 
+  test "inserted data should come out the same order it went in" do
+    data = [:foo, :bar, :baz, :quun]
+    queue =
+      Enum.reduce(data, Carousel.new, fn item, acc ->
+        Carousel.insert(acc, item)
+      end)
+
+    assert {^data, _} = Carousel.take(queue, 4)
+  end
+
+  test "inserted data should come out the same order it went in (with initial data)" do
+    data = [:foo, :bar, :baz, :quun]
+    queue =
+      Enum.reduce(Enum.drop(data, 2), Carousel.new(Enum.take(data, 2)), fn item, acc ->
+        Carousel.insert(acc, item)
+      end)
+
+    assert {^data, _} = Carousel.take(queue, 4)
+  end
+
   test "should cycle the items in the carousel" do
     carousel =
       Carousel.new([:foo, :bar, :baz])
