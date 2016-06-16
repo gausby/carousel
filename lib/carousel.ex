@@ -37,6 +37,9 @@ defmodule Carousel do
   defp do_cycle(carousel, 0, acc) do
     {Enum.reverse(acc), carousel}
   end
+  defp do_cycle(%Carousel{queue: {[], []}} = empty_carousel, _n, _acc) do
+    {[], empty_carousel}
+  end
   defp do_cycle(%Carousel{queue: queue} = carousel, n, acc) do
     {{:value, item}, temp_queue} = :queue.out(queue)
     new_queue = :queue.snoc(temp_queue, item)

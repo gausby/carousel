@@ -23,4 +23,8 @@ defmodule CarouselTest do
 
     assert {[:foo, :bar, :baz, :foo], %Carousel{}} = Carousel.take(carousel, 4)
   end
+
+  test "should return an empty result list when cycling a carousel without data" do
+    assert {[], %Carousel{}} = Carousel.take(Carousel.new(), 4)
+  end
 end
