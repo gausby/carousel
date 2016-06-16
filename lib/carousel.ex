@@ -21,7 +21,7 @@ defmodule Carousel do
   so it will get returned when the carousel has made a cycle.
   """
   def insert(%Carousel{queue: queue} = carousel, item) do
-    %{carousel|queue: :queue.in(item, queue)}
+    %{carousel|queue: :queue.snoc(queue, item)}
   end
 
   @doc """
@@ -39,7 +39,7 @@ defmodule Carousel do
   end
   defp do_cycle(%Carousel{queue: queue} = carousel, n, acc) do
     {{:value, item}, temp_queue} = :queue.out(queue)
-    new_queue = :queue.in(item, temp_queue)
+    new_queue = :queue.snoc(temp_queue, item)
 
     do_cycle(%{carousel|queue: new_queue}, n - 1, [item|acc])
   end
