@@ -16,6 +16,12 @@ defmodule CarouselTest do
       assert carousel.queue == {[:baz], [:foo, :bar]}
       assert carousel.length == 3
     end
+
+    test "should raise if initialized with invalid data" do
+      assert_raise ArgumentError, fn ->
+        Carousel.new(:foo)
+      end
+    end
   end
 
   describe "inserting data" do

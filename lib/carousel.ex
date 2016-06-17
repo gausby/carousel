@@ -32,11 +32,18 @@ defmodule Carousel do
       [:foo, :bar, :baz]
 
   """
-  def new(items \\ [], opts \\ []) do
+  def new(items \\ [], opts \\ [])
+  def new(items, opts) when is_list(items) do
     %Carousel{queue: :queue.from_list(items),
               length: length(items),
               hard_stop: Keyword.get(opts, :hard_stop, :false)}
   end
+  def new(data, _opts) do
+    raise ArgumentError,
+      message: "Initial data should be given as a list,"
+            <> " got: #{inspect data}"
+  end
+
 
   @doc """
   Insert a new item to the carousel. It will get inserted in the back
